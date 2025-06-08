@@ -7,3 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+
+Card::SUITS.each do |suit|
+  Card::CARDS.each do |card_type| 
+    Card.find_or_create_by!(suit: suit, card: card_type)
+  end
+end
+
+Card.find_or_create_by!(suit: nil, card: "joker")
