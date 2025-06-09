@@ -8,4 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     get :card, to: 'card#index'
   end
+
+  # Defines the root path route ("/")
+  # root "posts#index"
 end
