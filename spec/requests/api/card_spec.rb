@@ -11,10 +11,10 @@ RSpec.describe "Api::Cards", type: :request do
     end
 
     it "should contain the correct json fields" do
-        get "/api/card"
-        json = JSON.parse(response.body)
+      get "/api/card"
+      json = JSON.parse(response.body)
 
-        expect(json).to include("suit", "card")
+      expect(json).to include("suit", "card")
     end
   end
 end
