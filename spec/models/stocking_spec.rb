@@ -35,6 +35,12 @@ RSpec.describe Stocking, type: :model do
     it "should show a card status of rented" do
       expect(subject.stocking.rental_status ).to eq Stocking::RENTED
     end
+
+    it "should have a timestamp for when the card is rented" do
+      freeze_time do
+        expect(subject.stocking.time_rented_out).to eq Time.now
+      end
+    end
     
     describe "all cards rented" do
       before do
