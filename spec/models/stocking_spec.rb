@@ -21,6 +21,37 @@ RSpec.describe Stocking, type: :model do
     end
   end
 
+  describe "return_card" do
+    let!(:card) { Card.new(suit: "heart", card: "8") }
+    
+    before {
+      card.save!
+    }
+
+    before(:each) {
+      Stocking.get_available_card
+    }
+
+    it "should update the rental status to available" do
+      card.reload
+      expect(card.stocking.rental_status).to eq(Stocking::RENTED)
+      card.stocking.return_card
+
+      card.reload
+      expect(card.stocking.rental_status).to eq(Stocking::AVAILABLE)
+    end
+
+    describe "card has already been returned" do
+      it "throws an error" do
+        card.stocking.update(rental_status: Stocking::AVAILABLE)
+
+        expect { card.stocking.return_card }.to raise_error(CardAlreadyReturnedError)
+        
+      end
+    end
+
+  end
+
   describe "get_available_card" do
     let!(:card) { Card.new(suit: "heart", card: "7" ) }
 

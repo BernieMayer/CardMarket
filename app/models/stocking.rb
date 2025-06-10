@@ -14,6 +14,12 @@ class Stocking < ApplicationRecord
     #pretend to charge Paypal account
   end
 
+  def return_card
+    raise CardAlreadyReturnedError if self.rental_status != RENTED
+
+    self.update(rental_status: AVAILABLE, time_rented_out: nil) 
+  end
+
   def self.get_available_card
     stocked_cards = Stocking.all.available_cards
     picked_stocking = stocked_cards.sample
@@ -22,5 +28,11 @@ class Stocking < ApplicationRecord
 
     picked_stocking.rent
     picked_stocking.card
+  end
+end
+
+class CardAlreadyReturnedError < StandardError
+  def message
+    "This card has already been returned."
   end
 end
