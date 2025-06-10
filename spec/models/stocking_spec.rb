@@ -20,4 +20,27 @@ RSpec.describe Stocking, type: :model do
       expect(stocking).not_to be_valid
     end
   end
+
+  describe "get_available_card" do
+    let!(:card) { Card.new(suit: "heart", card: "7" ) }
+
+    before {
+      card.save!
+      card.stocking.rental_status = Stocking::AVAILABLE    
+    } 
+    subject { Stocking.get_available_card }
+    
+    it { should be_an_instance_of Card }
+    
+    describe "all cards rented" do
+      before do
+        Stocking.all.each do |stocking|
+          stocking.update(rental_status: Stocking::RENTED)
+        end
+      end
+
+      it { is_expected.to be_nil }
+
+    end
+  end
 end
