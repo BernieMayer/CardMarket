@@ -31,6 +31,10 @@ RSpec.describe Stocking, type: :model do
     subject { Stocking.get_available_card }
     
     it { should be_an_instance_of Card }
+
+    it "should show a card status of rented" do
+      expect(subject.stocking.rental_status ).to eq Stocking::RENTED
+    end
     
     describe "all cards rented" do
       before do
