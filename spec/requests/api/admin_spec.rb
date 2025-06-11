@@ -1,7 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe "Api::Admins", type: :request do
-  describe "GET /index" do
-    pending "add some examples (or delete) #{__FILE__}"
+  let(:user_id) { 123 }
+ 
+  describe "admin/stock" do
+    let!(:card1) { Card.create!(suit: "spade", card: "2") }
+    let!(:card2) { Card.create!(suit: "spade", card: "5") }
+    let!(:card3) { Card.create!(suit: "heart", card: "7") }
+
+    before {
+      card2.stocking.rent(user_id)
+      card3.stocking.update(rental_status: Stocking::LOST)
+    }
+
+    it "should return a succesful response" do
+       get "/api/admin/stock"
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "should return the correct json" do
+      get "/api/admin/stock"
+      json = JSON.parse(response.body)
+
+      expect(json["lost_cards"]).to eq(1)
+      expect(json["available_cards"]).to eq(1)
+      expect(json["rented_cards"]).to eq(1)
+    end
   end
 end
