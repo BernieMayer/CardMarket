@@ -2,6 +2,9 @@ require 'singleton'
 
 class SystemState 
   include Singleton
+  attr_reader :balance
+
+  LOST_CARD_FEE = 0.50
 
   def initialize
     @banned_users = Set.new
@@ -22,5 +25,12 @@ class SystemState
 
   def check_if_user_is_banned(user_id)
     @banned_users.include?(user_id.to_i)
+  end
+
+  def restock
+    Stocking.mark_cards_as_lost
+    lost_cards = Stocking.all.lost_cards
+    charge_balance(lost_cards.length * LOST_CARD_FEE)
+
   end
 end

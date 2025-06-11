@@ -8,6 +8,7 @@ class Stocking < ApplicationRecord
   validates :rental_status, inclusion: { in: RENTAL_STATUS }
 
   scope :available_cards, -> { where(rental_status: AVAILABLE)}
+  scope :lost_cards, -> { where(rental_status: LOST )}
 
   def rent(user_id) 
     self.update(rental_status: RENTED,
