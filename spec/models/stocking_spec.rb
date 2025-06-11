@@ -77,6 +77,22 @@ RSpec.describe Stocking, type: :model do
     it "should have the user_id for the card rented" do
       expect(subject.stocking.user_id_rented_to).to eq user_id
     end
+
+    describe "if a card is returned afer 15 minutes" do
+      it "should have a rental_status of lost" do
+        card.stocking.rent(user_id)
+
+        travel_to(Time.current + 16.minutes) do
+
+          card.stocking.return_card
+
+        end
+
+        card.reload
+        expect(card.stocking.rental_status).to eq(Stocking::LOST)
+
+      end
+    end
     
     describe "all cards rented" do
       before do

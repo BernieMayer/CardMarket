@@ -17,7 +17,11 @@ class Stocking < ApplicationRecord
   def return_card
     raise CardAlreadyReturnedError if self.rental_status != RENTED
 
-    self.update(rental_status: AVAILABLE, time_rented_out: nil) 
+    if (Time.now - self.time_rented_out) < 15.minutes
+      self.update(rental_status: AVAILABLE, time_rented_out: nil)
+    else 
+      self.update(rental_status: LOST, time_rented_out: nil)
+    end
   end
 
   def self.get_available_card(user_id:)
