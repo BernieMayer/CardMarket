@@ -18,6 +18,18 @@ RSpec.describe "Api::Cards", type: :request do
       expect(json).to include("suit", "card")
     end
   end
+
+  describe "Client who is banned tries a request" do
+    let! (:banned_user_id) { 100 }
+
+    it "returns a 403 forbidden code" do
+      SystemState.instance.ban_user(banned_user_id)
+      
+      get "/api/card", params:{ user_id: banned_user_id }
+
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
   
 
   describe "PUT" do
