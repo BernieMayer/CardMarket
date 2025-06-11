@@ -5,6 +5,15 @@ class SystemState
 
   def initialize
     @banned_users = Set.new
+    @balance = 5.0
+  end
+
+  def add_to_balance(amount)
+    @balance += amount
+  end
+
+  def charge_balance(amount)
+    @balance -= amount
   end
 
   def ban_user(user_id)
