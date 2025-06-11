@@ -23,6 +23,27 @@ RSpec.describe Stocking, type: :model do
     end
   end
 
+  describe "mark_cards_lost_lost" do
+    let!(:card) { Card.create(suit: "heart", card: "9") }
+    let!(:card2) { Card.create(suit: "heart", card: "9") }
+
+    it "should mark the cards as lost after 15 minutes" do
+        card.stocking.rent(user_id)
+        card2.stocking.rent(user_id)
+
+        travel_to(Time.current + 16.minutes) do
+
+          Stocking.mark_cards_as_lost
+
+        end
+
+        card.reload
+        card2.reload
+        expect(card.stocking.rental_status).to eq(Stocking::LOST)
+        expect(card2.stocking.rental_status).to eq(Stocking::LOST)
+    end
+  end
+
   describe "return_card" do
     let!(:card) { Card.new(suit: "heart", card: "8") }
     

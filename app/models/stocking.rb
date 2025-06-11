@@ -24,6 +24,10 @@ class Stocking < ApplicationRecord
     end
   end
 
+  def self.mark_cards_as_lost
+    self.all.where('time_rented_out < ?', 15.minutes.ago).update_all(rental_status: LOST, time_rented_out: nil)
+  end
+
   def self.get_available_card(user_id:)
     stocked_cards = Stocking.all.available_cards
     picked_stocking = stocked_cards.sample
