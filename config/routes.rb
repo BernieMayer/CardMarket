@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   namespace :api do
     get :card, to: 'card#index'
     put :card, to: 'card#update'
+
+    get 'admin/stock', to: 'admin#stock'
+    get 'admin/finances', to: 'admin#finances'
   end
 
   # Defines the root path route ("/")
