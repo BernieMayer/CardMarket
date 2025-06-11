@@ -23,5 +23,12 @@ module CardMarket
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    
+
+    config.after_initialize do
+      if Rails.env.production? || Rails.env.development?
+        Rails.application.load_seed
+      end
+    end
   end
 end
