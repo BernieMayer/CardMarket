@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Stocking, type: :model do
+  let!(:user_id) { 514 }
+
   describe "validations" do
     it "is valid" do
       card = Card.new(suit:"heart", card:"5")
@@ -29,7 +31,7 @@ RSpec.describe Stocking, type: :model do
     }
 
     before(:each) {
-      Stocking.get_available_card
+      Stocking.get_available_card(user_id: user_id)
     }
 
     it "should update the rental status to available" do
@@ -49,7 +51,6 @@ RSpec.describe Stocking, type: :model do
         
       end
     end
-
   end
 
   describe "get_available_card" do
@@ -59,7 +60,7 @@ RSpec.describe Stocking, type: :model do
       card.save!
       card.stocking.rental_status = Stocking::AVAILABLE    
     } 
-    subject { Stocking.get_available_card }
+    subject { Stocking.get_available_card(user_id: user_id) }
     
     it { should be_an_instance_of Card }
 
@@ -71,6 +72,10 @@ RSpec.describe Stocking, type: :model do
       freeze_time do
         expect(subject.stocking.time_rented_out).to eq Time.now
       end
+    end
+
+    it "should have the user_id for the card rented" do
+      expect(subject.stocking.user_id_rented_to).to eq user_id
     end
     
     describe "all cards rented" do

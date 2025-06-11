@@ -1,7 +1,7 @@
 class Api::CardController < ApplicationController
 
   def index 
-    @card = Stocking.get_available_card
+    @card = Stocking.get_available_card(user_id: params[:user_id])
     render json: { suit: @card&.suit, card: @card&.card }
   end
 

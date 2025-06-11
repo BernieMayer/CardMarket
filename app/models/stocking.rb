@@ -9,8 +9,9 @@ class Stocking < ApplicationRecord
 
   scope :available_cards, -> { where(rental_status: AVAILABLE)}
 
-  def rent 
-    self.update(rental_status: RENTED, time_rented_out: Time.now)
+  def rent(user_id) 
+    self.update(rental_status: RENTED,
+               time_rented_out: Time.now, user_id_rented_to: user_id)
   end
 
   def return_card
@@ -19,13 +20,13 @@ class Stocking < ApplicationRecord
     self.update(rental_status: AVAILABLE, time_rented_out: nil) 
   end
 
-  def self.get_available_card
+  def self.get_available_card(user_id:)
     stocked_cards = Stocking.all.available_cards
     picked_stocking = stocked_cards.sample
     
     return nil if picked_stocking.nil?
 
-    picked_stocking.rent
+    picked_stocking.rent(user_id)
     picked_stocking.card
   end
 end

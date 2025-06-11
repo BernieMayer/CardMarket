@@ -1,28 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe "Api::Cards", type: :request do
+  let!(:user_id) { 514 }
   describe "GET /index" do
 
     let!(:card1) { Card.create!(suit: 'spade', card: '3') }
     
     it "should return a successful response" do
-      get "/api/card"
+      get "/api/card", params:{user_id: user_id}
       expect(response).to have_http_status(:ok)
     end
 
     it "should contain the correct json fields" do
-      get "/api/card"
+      get "/api/card", params:{user_id: user_id}
       json = JSON.parse(response.body)
 
       expect(json).to include("suit", "card")
     end
   end
+  
 
   describe "PUT" do
     let!(:card) { Card.create!(suit: 'heart', card: '5') }
 
     it "returns the card" do
-      card.stocking.rent
+      card.stocking.rent(user_id)
 
       put "/api/card", params:{ suit: card.suit, card: card.card }
 
