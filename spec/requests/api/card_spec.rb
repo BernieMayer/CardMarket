@@ -17,4 +17,28 @@ RSpec.describe "Api::Cards", type: :request do
       expect(json).to include("suit", "card")
     end
   end
+
+  describe "PUT" do
+    let!(:card) { Card.create!(suit: 'heart', card: '5') }
+
+    it "returns the card" do
+      card.stocking.rent
+
+      put "/api/card", params:{ suit: card.suit, card: card.card }
+
+      expect(response).to have_http_status(:ok)
+
+      card.reload
+      expect(card.stocking.rental_status).to eq Stocking::AVAILABLE
+    end
+
+    it "returns error for card that is available" do
+      card.stocking.update(rental_status: Stocking::AVAILABLE)
+
+      put "/api/card", params:{ suit: card.suit, card: card.card }
+      
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(JSON.parse(response.body)["errors"]).to include("Card can't be returned")
+    end
+  end
 end

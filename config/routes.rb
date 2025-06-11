@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     get :card, to: 'card#index'
+    put :card, to: 'card#update'
   end
 
   # Defines the root path route ("/")

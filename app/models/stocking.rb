@@ -11,7 +11,6 @@ class Stocking < ApplicationRecord
 
   def rent 
     self.update(rental_status: RENTED, time_rented_out: Time.now)
-    #pretend to charge Paypal account
   end
 
   def return_card
