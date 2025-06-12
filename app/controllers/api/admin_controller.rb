@@ -7,11 +7,19 @@ class Api::AdminController < ApplicationController
   end
 
   def finances
+
+    recent_transactions = Transaction.where(created_at: 3.hours.ago..Time.now)
+
+    mapped_transactions = recent_transactions.map{ |transaction|{
+      type: transaction.transaction_type, 
+     amount: transaction.amount, created_at:
+      transaction.created_at}}
+
     render json: {
       balance: SystemState.instance.balance,
       pending_rent: Stocking.pending_rent,
       pending_replacemnt: 0.0, #TODO implement logic
-      recent_transactions: [] #TODO implement
+      recent_transactions: mapped_transactions
     }
     
   end
