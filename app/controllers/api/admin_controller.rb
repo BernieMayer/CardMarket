@@ -1,4 +1,4 @@
-class Api::AdminController < ApplicationController
+class Api::AdminController < ActionController::API
 
   def stock
     render json: {available_cards: Stocking.all.available_cards.length,

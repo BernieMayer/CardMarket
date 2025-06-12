@@ -1,5 +1,4 @@
-class Api::CardController < ApplicationController
-
+class Api::CardController < ActionController::API
   before_action :reject_banned_users
 
   def index 
