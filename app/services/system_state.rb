@@ -17,6 +17,9 @@ class SystemState
 
   def charge_balance(amount)
     @balance -= amount
+    if @balance < 0
+      raise StandardError.new("balance can't go below 0")
+    end
   end
 
   def ban_user(user_id)
