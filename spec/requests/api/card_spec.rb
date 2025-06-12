@@ -2,6 +2,12 @@ require 'rails_helper'
 
 RSpec.describe "Api::Cards", type: :request do
   let!(:user_id) { 514 }
+  let(:mock_system_state) { instance_double(SystemState, check_if_user_is_banned: false ) }
+
+  before do
+    allow(SystemState).to receive(:instance).and_return(mock_system_state)
+  end
+
   describe "GET /index" do
 
     let!(:card1) { Card.create!(suit: 'spade', card: '3') }
@@ -21,6 +27,12 @@ RSpec.describe "Api::Cards", type: :request do
 
   describe "Client who is banned tries a request" do
     let! (:banned_user_id) { 100 }
+
+      let(:mock_system_state) { instance_double(SystemState, ban_user:  nil, check_if_user_is_banned: true ) }
+
+      before do
+        allow(SystemState).to receive(:instance).and_return(mock_system_state)
+      end
 
     it "returns a 403 forbidden code" do
       SystemState.instance.ban_user(banned_user_id)

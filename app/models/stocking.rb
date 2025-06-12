@@ -24,7 +24,8 @@ class Stocking < ApplicationRecord
       self.update(rental_status: AVAILABLE, time_rented_out: nil)
     else
       Transaction.create(transaction_type: Transaction::CARD_REPLACEMENT, amount: 0.5)
-      self.update(rental_status: LOST, time_rented_out: nil)
+      SystemState.instance.ban_user(self.user_id_rented_to)
+      self.update(rental_status: LOST, user_id_rented_to: nil, time_rented_out: nil)
     end
   end
 

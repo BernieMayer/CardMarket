@@ -37,7 +37,8 @@ class SystemState
 
     lost_cards.each do |lost_card|
       # clear each card:
-      lost_card.update(time_rented_out: nil, rental_status: Stocking::AVAILABLE)
+      SystemState.instance.ban_user(lost_card.user_id_rented_to)
+      lost_card.update(time_rented_out: nil, user_id_rented_to: nil, rental_status: Stocking::AVAILABLE)
     end
 
   end
