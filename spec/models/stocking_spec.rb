@@ -2,6 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Stocking, type: :model do
   let!(:user_id) { 514 }
+  let(:mock_system_state) { instance_double(SystemState, check_if_user_is_banned: false, ban_user: nil, add_to_balance: nil ) }
+
+  before do
+    allow(SystemState).to receive(:instance).and_return(mock_system_state)
+  end
 
   describe "validations" do
     it "is valid" do

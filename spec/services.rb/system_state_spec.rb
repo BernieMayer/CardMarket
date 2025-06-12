@@ -1,4 +1,4 @@
-
+require 'rails_helper'
 RSpec.describe SystemState do
   
   describe "restock" do

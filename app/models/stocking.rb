@@ -20,7 +20,9 @@ class Stocking < ApplicationRecord
     raise CardAlreadyReturnedError if self.rental_status != RENTED
 
     if (Time.now - self.time_rented_out) < 15.minutes
-      Transaction.create(transaction_type: Transaction::RENT, amount: self.calculate_rent)
+      rent = self.calculate_rent
+      Transaction.create(transaction_type: Transaction::RENT, amount: rent )
+      SystemState.instance.add_to_balance(rent)
       self.update(rental_status: AVAILABLE, time_rented_out: nil)
     else
       Transaction.create(transaction_type: Transaction::CARD_REPLACEMENT, amount: 0.5)
