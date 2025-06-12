@@ -37,7 +37,7 @@ class SystemState
 
     lost_cards.each do |lost_card|
       # clear each card
-      lost_card.update(time_rented_out: nil, Transaction::AVAILABLE)
+      lost_card.update(time_rented_out: nil, rental_status: Stocking::AVAILABLE)
     end
 
   end
