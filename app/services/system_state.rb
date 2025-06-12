@@ -36,7 +36,7 @@ class SystemState
     charge_balance(lost_cards.length * LOST_CARD_FEE)
 
     lost_cards.each do |lost_card|
-      # clear each card
+      # clear each card:
       lost_card.update(time_rented_out: nil, rental_status: Stocking::AVAILABLE)
     end
 
