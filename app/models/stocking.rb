@@ -30,6 +30,16 @@ class Stocking < ApplicationRecord
     self.all.where('time_rented_out < ?', 15.minutes.ago).update_all(rental_status: LOST, time_rented_out: nil)
   end
 
+  def self.pending_rent
+    self.all.rented_cards.reduce(0) { |sum, stocking| sum + stocking.calculate_rent }
+  end
+
+  def calculate_rent 
+    diff_seconds = Time.now - time_rented_out
+    diff_minutes = (diff_seconds / 60).ceil
+    return diff_minutes * 0.01
+  end
+
   def self.get_available_card(user_id:)
     stocked_cards = Stocking.all.available_cards
     picked_stocking = stocked_cards.sample
