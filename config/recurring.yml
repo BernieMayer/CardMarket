@@ -19,4 +19,4 @@ production:
 development:
   restock:
     command: "SystemState.instance.restock"
-    schedule: every minute
+    schedule: every hour
