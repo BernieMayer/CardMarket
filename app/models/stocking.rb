@@ -23,7 +23,7 @@ class Stocking < ApplicationRecord
       Transaction.create(transaction_type: Transaction::RENT, amount: self.calculate_rent)
       self.update(rental_status: AVAILABLE, time_rented_out: nil)
     else
-      Transaction.create(transaction_type: ransaction::CARD_REPLACEMENT, amount: 0.5)
+      Transaction.create(transaction_type: Transaction::CARD_REPLACEMENT, amount: 0.5)
       self.update(rental_status: LOST, time_rented_out: nil)
     end
   end

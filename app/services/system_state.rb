@@ -35,5 +35,10 @@ class SystemState
     lost_cards = Stocking.all.lost_cards
     charge_balance(lost_cards.length * LOST_CARD_FEE)
 
+    lost_cards.each do |lost_card|
+      # clear each card
+      lost_card.update(time_rented_out: nil, Transaction::AVAILABLE)
+    end
+
   end
 end
