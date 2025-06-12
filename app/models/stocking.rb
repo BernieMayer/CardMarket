@@ -36,6 +36,11 @@ class Stocking < ApplicationRecord
     self.all.rented_cards.reduce(0) { |sum, stocking| sum + stocking.calculate_rent }
   end
 
+  def self.pending_replacemnt
+    overdue_cards = self.all.where('time_rented_out < ?', 15.minutes.ago)
+    overdue_cards.length * 0.50
+  end
+
   def calculate_rent 
     diff_seconds = Time.now - time_rented_out
     diff_minutes = (diff_seconds / 60).ceil

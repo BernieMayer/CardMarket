@@ -18,7 +18,7 @@ class Api::AdminController < ApplicationController
     render json: {
       balance: SystemState.instance.balance,
       pending_rent: Stocking.pending_rent,
-      pending_replacemnt: 0.0, #TODO implement logic
+      pending_replacemnt: Stocking.pending_replacemnt,
       recent_transactions: mapped_transactions
     }
     
