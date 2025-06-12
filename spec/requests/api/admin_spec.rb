@@ -27,4 +27,26 @@ RSpec.describe "Api::Admins", type: :request do
       expect(json["rented_cards"]).to eq(1)
     end
   end
+
+  describe "admin/finances" do
+    let(:mock_system_state) { instance_double(SystemState, balance: 6.20, add_to_balance: nil) }
+
+    before do
+      allow(SystemState).to receive(:instance).and_return(mock_system_state)
+    end
+
+    it "should return a succesful response" do
+      get "/api/admin/finances"
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "should return the correct json" do
+      get "/api/admin/finances"
+      json = JSON.parse(response.body)
+
+      expect(json["balance"]).to eq(6.20)
+      expect(json).to include("pending_rent")
+      expect(json).to include("recent_transactions")
+    end
+  end
 end

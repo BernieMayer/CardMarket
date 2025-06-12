@@ -7,6 +7,12 @@ class Api::AdminController < ApplicationController
   end
 
   def finances
+    render json: {
+      balance: SystemState.instance.balance,
+      pending_rent: 0.0, #TODO implement logic
+      pending_replacemnt: 0.0, #TODO implement logic
+      recent_transactions: [] #TODO implement
+    }
     
   end
 
